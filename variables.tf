@@ -14,11 +14,13 @@ variable "region" {}
 # SSH Access
 variable "ssh_access" {
   type = list(string)
+  default = [ "0.0.0.0/0" ]
 }
 
 # UI Access
 variable "http_access" {
   type = list(string)
+  default = [ "0.0.0.0/0" ]
 }
 
 # Environment
