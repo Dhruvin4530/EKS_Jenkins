@@ -31,7 +31,7 @@ pipeline {
               sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform init"
             }
         }
-        stage('Terraform init'){
+        stage('Terraform plan'){
             steps{
               sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform plan"
             }
@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }
-        stage('Terraform Apply'){
+        stage('Terraform apply'){
             steps{
                sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform apply -input=false myplan"   
             }
