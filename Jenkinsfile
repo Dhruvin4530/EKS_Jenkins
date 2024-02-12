@@ -12,7 +12,14 @@ env.instance_count = WORKER_NODE_COUNT
 env.instance_size = WORKER_NODE_SIZE
 
 pipeline {
+    
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
+    }
+
     agent any
+    
     stages {
         stage('Git Checkout'){
             steps{
@@ -21,24 +28,12 @@ pipeline {
         }
         stage('Terraform init'){
             steps{
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws',
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                        sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform init"
-                    }
+              sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform init"
             }
         }
         stage('Terraform init'){
             steps{
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws',
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                        sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform plan"
-                    }
+              sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform plan"
             }
         }
         stage('Approval') {
@@ -50,13 +45,7 @@ pipeline {
         }
         stage('Terraform Apply'){
             steps{
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws',
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                        sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform apply -input=false myplan"
-                    }
+               sh "export TF_VAR_region='${env.region}' && export TF_VAR_env.cluster_name='${env.cluster_name}' && export TF_VAR_env.instance_count='${env.instance_count}' && export TF_VAR_env.instance_size='${env.instance_size} && terraform apply -input=false myplan"   
             }
         }
     }
