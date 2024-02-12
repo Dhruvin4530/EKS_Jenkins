@@ -59,7 +59,7 @@ variable "instance_size" {
 }
 
 # node count
-variable "count" {
+variable "worker_node_count" {
   type = string
   description = "Worker node's count"
 }

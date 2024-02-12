@@ -41,5 +41,5 @@ module "eks" {
   eks_security_group_id = module.security_groups.eks_security_group_id
   instance_size         = var.instance_size
   cluster_name          = var.cluster_name
-  count                 = var.instance_count
+  worker_node_count                 = var.instance_count
 }

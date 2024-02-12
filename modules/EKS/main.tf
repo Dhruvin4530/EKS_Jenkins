@@ -69,9 +69,9 @@ resource "aws_eks_node_group" "node-grp" {
   }
 
   scaling_config {
-    desired_size = var.count
-    max_size     = var.count
-    min_size     = var.count
+    desired_size = var.worker_node_count
+    max_size     = var.worker_node_count
+    min_size     = var.worker_node_count
   }
 
   update_config {
